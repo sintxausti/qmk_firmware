@@ -3,6 +3,13 @@
  */
 
 #include QMK_KEYBOARD_H
+#ifdef UNICODEMAP_ENABLE
+#    include "process_unicode.h"  // opcional, pero ayuda al autocomplete
+#    define X(n)        UM(n)
+#    define XP(n, s)    UP(n, s)
+#endif
+
+
 
 
 
@@ -60,6 +67,9 @@ enum custom_keycodes {
   LENS_CLOSE,
   UNIX_HOME,
   ONOFFBOT,
+  HTTPS,
+  HTTP,
+  FTP,
   KVM01,
   KVM02,
   KVM03
@@ -185,7 +195,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	),
 
 	[_RAISE]=LAYOUT_ortho_4x12(
-			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	RSA(KC_GRV),	RALT(KC_1),		RALT(KC_2),		RALT(KC_3),		RALT(KC_4),		RALT(KC_5),
+			KC_NO,	HTTPS,	HTTP,	FTP,	KC_NO,	KC_NO,	RSA(KC_GRV),	RALT(KC_1),		RALT(KC_2),		RALT(KC_3),		RALT(KC_4),		RALT(KC_5),
 			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	RALT(KC_SCLN),	RALT(KC_6),		RALT(KC_7),		RALT(KC_8),		RALT(KC_LBRC),	RALT(KC_RBRC),
 			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,			RALT(KC_MINS),	RALT(KC_EQL),	RALT(KC_BSLS),	RALT(KC_9),		RALT(KC_0),
 			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO
@@ -431,6 +441,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 				
 			}	
 
+			break;
+			
+			
+		case HTTPS:
+
+			if (record->event.pressed){
+
+				SEND_STRING("https://");
+				
+			}	
+			
+			break;
+			
+		case HTTP:
+
+			if (record->event.pressed){
+
+				SEND_STRING("http://");
+				
+			}	
+			
+			break;
+			
+		case FTP:
+
+			if (record->event.pressed){
+
+				SEND_STRING("ftp://");
+				
+			}	
+			
 			break;
 
 		default:

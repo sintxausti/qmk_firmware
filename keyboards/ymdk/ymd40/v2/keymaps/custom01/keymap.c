@@ -49,6 +49,38 @@ enum unicode_names {
     
 };
 
+#define I3_WS1  LGUI(KC_1)
+#define I3_WS2  LGUI(KC_2)
+#define I3_WS3  LGUI(KC_3)
+#define I3_WS4  LGUI(KC_4)
+#define I3_WS5  LGUI(KC_5)
+#define I3_WS6  LGUI(KC_6)
+
+#define I3_MV1  LSFT(LGUI(KC_1))
+#define I3_MV2  LSFT(LGUI(KC_2))
+#define I3_MV3  LSFT(LGUI(KC_3))
+#define I3_MV4  LSFT(LGUI(KC_4))
+#define I3_MV5  LSFT(LGUI(KC_5))
+#define I3_MV6  LSFT(LGUI(KC_6))
+
+#define I3_FL   LGUI(KC_H)                 // focus left  (según tu i3: Mod+h)
+#define I3_FD   LGUI(KC_J)                 // focus down
+#define I3_FU   LGUI(KC_K)                 // focus up
+#define I3_FR   LGUI(KC_L)                 // focus right
+
+#define I3_ML   LSFT(LGUI(KC_H))           // move left   (Mod+Shift+h)
+#define I3_MD   LSFT(LGUI(KC_J))
+#define I3_MU   LSFT(LGUI(KC_K))
+#define I3_MR   LSFT(LGUI(KC_L))
+
+#define I3_TERM LGUI(KC_ENT)               // Mod+Enter
+#define I3_MENU LGUI(KC_D)                 // Mod+Space
+#define I3_KILL LSFT(LGUI(KC_Q))           // Mod+Shift+q
+#define I3_FULL LGUI(KC_F)                 
+#define I3_FLOT LSFT(LGUI(KC_SPC))         // Mod+Shift+Space (toggle floating) o cambia a LGUI(KC_SPC) si lo tienes así
+
+
+
 
 
 
@@ -84,19 +116,20 @@ bool special_capslock_token2;
 
 //TapDance Functions
 enum {
-    TD_SIFT_CAPSLOCK,
-    TD_RHAND_LAYER,
-    TD_WIN_MENU,
-    TD_MNXT,
-    TD_PLAY,
-    TD_VOLD,
-    TD_VOLU,
-    TD_ESC,
+	TD_SIFT_CAPSLOCK,
+	TD_RHAND_LAYER,
+	TD_WIN_MENU,
+	TD_MNXT,
+	TD_PLAY,
+	TD_VOLD,
+	TD_VOLU,
+	TD_ESC,
 	TD_SFT_MOV,
 	TD_CTL_MOV,
 	TD_LPRN,
 	TD_RPRN,
-    TD_TAB
+	TD_TAB,
+	TD_SPACE
 
 };
 
@@ -117,6 +150,7 @@ enum layer_names {
   _FUNCTION_KEYS,
   _FUNCTION2_KEYS,
   _EMOJIS,
+  _I3,
   _QWERTY2
 };
 
@@ -181,31 +215,31 @@ const keypos_t PROGMEM hand_swap_config[MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_QWERTY]=LAYOUT_ortho_4x12(
-			TD(TD_RHAND_LAYER),		RGUI_T(KC_Q),		RALT_T(KC_W),		RCTL_T(KC_E),			RSFT_T(KC_R),		LT(_MOUSE,KC_T),	KC_Y,			RSFT_T(KC_U),		RCTL_T(KC_I),			RALT_T(KC_O),	RGUI_T(KC_P),				KC_BSPC,
-			TD(TD_ESC),				LT(_MOV,KC_A),		LALT_T(KC_S),		LCTL_T(KC_D),			LSFT_T(KC_F),		LT(_MOV2,KC_G),		KC_H,			LSFT_T(KC_J),		LCTL_T(KC_K),			LALT_T(KC_L),	LT(_FUNCTION_KEYS,KC_SCLN),	LT(_FUNCTION2_KEYS,KC_QUOT),
-			OSM(MOD_LCTL),			LGUI_T(KC_Z),		KC_X,				TD(TD_CTL_MOV),			TD(TD_SFT_MOV),		KC_B,				KC_N,			KC_M,				KC_COMM,				KC_DOT,			LGUI_T(KC_SLSH),			QK_LEAD,
-			OSM(MOD_LGUI),			OSM(MOD_LALT),		OSM(MOD_RALT),		TD(TD_SIFT_CAPSLOCK),	TD(TD_TAB),			SH_T(KC_SPACE),		SH_T(KC_SPACE),	LT(_RAISE,KC_ENT),	MO(_EMOJIS),			TD(TD_PLAY),	TD(TD_VOLU),				TD(TD_VOLD)
+			TD(TD_RHAND_LAYER),		RGUI_T(KC_Q),		RALT_T(KC_W),		RCTL_T(KC_E),		RSFT_T(KC_R),		LT(_MOUSE,KC_T),	KC_Y,			RSFT_T(KC_U),		RCTL_T(KC_I),	RALT_T(KC_O),	RGUI_T(KC_P),			KC_BSPC,
+			TD(TD_ESC),			LT(_MOV,KC_A),		LALT_T(KC_S),		LCTL_T(KC_D),		LSFT_T(KC_F),		LT(_MOV2,KC_G),		KC_H,			LSFT_T(KC_J),		LCTL_T(KC_K),	LALT_T(KC_L),	LT(_FUNCTION_KEYS,KC_SCLN),	LT(_FUNCTION2_KEYS,KC_QUOT),
+			OSM(MOD_LCTL),			LGUI_T(KC_Z),		KC_X,			TD(TD_CTL_MOV),		TD(TD_SFT_MOV),		KC_B,			KC_N,			KC_M,			KC_COMM,	KC_DOT,		LGUI_T(KC_SLSH),		QK_LEAD,
+			OSM(MOD_LGUI),			OSM(MOD_LALT),		OSM(MOD_RALT),		TD(TD_SIFT_CAPSLOCK),	TD(TD_TAB),		TD(TD_SPACE),		TD(TD_SPACE),		LT(_RAISE,KC_ENT),	MO(_EMOJIS),	TD(TD_PLAY),	TD(TD_VOLU),			TD(TD_VOLD)
 	),
     
 	[_EMOJIS]=LAYOUT_ortho_4x12(
-		X(HAMMER_SICKLE),	X(SMAILING),	X(GRINNING),	X(BEAMING),		X(ROLLING),		KC_NO,			KC_NO,			KC_NO,		X(EYEBROW),		X(SAD),			X(ANGRY),		KC_NO,
-		X(CHESS),			X(WINKING),		X(KISS),		X(HEARTS),		X(HEARTEYES),	KC_NO,			KC_NO,			KC_NO,		X(ASTONISHED),	X(HANDMOUTH),	X(PEEKINGEYE),	KC_NO,
-		X(CUP),				X(SUNGLASES),	X(HALO),		X(ZANY),		X(SPLODING),	KC_NO,			KC_NO,			KC_NO,		X(OPENHANDS),	KC_NO,			KC_NO,			KC_NO,
-		X(SALUTING),		X(THINKING),	X(SHUSHING),	X(YAWNING),		MO(_OTHERS),	SH_T(KC_SPACE),	SH_T(KC_SPACE),	KC_TRNS,	KC_NO,			KC_NO,			KC_NO,			KC_NO
+		X(HAMMER_SICKLE),	X(SMAILING),	X(GRINNING),	X(BEAMING),		X(ROLLING),	KC_NO,			KC_NO,			KC_NO,		X(EYEBROW),	X(SAD),			X(ANGRY),	KC_NO,
+		X(CHESS),		X(WINKING),	X(KISS),	X(HEARTS),		X(HEARTEYES),	KC_NO,			KC_NO,			KC_NO,		X(ASTONISHED),	X(HANDMOUTH),		X(PEEKINGEYE),	KC_NO,
+		X(CUP),			X(SUNGLASES),	X(HALO),	X(ZANY),		X(SPLODING),	KC_NO,			KC_NO,			KC_NO,		X(OPENHANDS),	KC_NO,			KC_NO,		KC_NO,
+		X(SALUTING),		X(THINKING),	X(SHUSHING),	X(YAWNING),		MO(_OTHERS),	SH_T(KC_SPACE),		SH_T(KC_SPACE),		KC_TRNS,	KC_NO,		KC_NO,			KC_NO,		KC_NO
 	),
 
 	[_RAISE]=LAYOUT_ortho_4x12(
-			KC_NO,	HTTPS,	HTTP,	FTP,	KC_NO,	KC_NO,	RSA(KC_GRV),	RALT(KC_1),		RALT(KC_2),		RALT(KC_3),		RALT(KC_4),		RALT(KC_5),
-			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	RALT(KC_SCLN),	RALT(KC_6),		RALT(KC_7),		RALT(KC_8),		RALT(KC_LBRC),	RALT(KC_RBRC),
-			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,			RALT(KC_MINS),	RALT(KC_EQL),	RALT(KC_BSLS),	RALT(KC_9),		RALT(KC_0),
-			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO
+			KC_NO,	HTTPS,	HTTP,	FTP,	KC_NO,	KC_NO,		RSA(KC_GRV),	RALT(KC_1),	RALT(KC_2),	RALT(KC_3),	RALT(KC_4),	RALT(KC_5),
+			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,		RALT(KC_SCLN),	RALT(KC_6),	RALT(KC_7),	RALT(KC_8),	RALT(KC_LBRC),	RALT(KC_RBRC),
+			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_NO,		KC_NO,		RALT(KC_MINS),	RALT(KC_EQL),	RALT(KC_BSLS),	RALT(KC_9),	RALT(KC_0),
+			KC_NO,	KC_NO,	KC_NO,	KC_NO,	KC_TAB,	KC_SPACE,	KC_SPACE,	KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO
 	),			
 			  
-    [_LOWER]=LAYOUT_ortho_4x12(
-			KC_DEL,     KC_NO,		LENS_CLOSE,		LENS_DOWN,		LENS_UP,            DM_PLY1,	KC_GRV,		 						KC_EXLM,		KC_AT,		    KC_HASH,	    	KC_DLR,			KC_PERC,
-			KC_ENT,		WINTAB,		ALTTAB,	    	C(G(KC_LEFT)),	C(G(KC_RIGHT)),		DM_PLY2,	RSA(KC_SCLN),						KC_CIRC,		KC_AMPR,	    KC_ASTR,	        TD(TD_LPRN),	TD(TD_RPRN),
-			KC_NO,		KC_NO,		KC_NO,			G(S(KC_S)),		C(S(KC_V)),		    G(KC_V),	XP(ORDINAL_MALE,ORDINAL_FEMALE),	KC_MINS,		KC_EQL,		    KC_BSLS,		    UNIX_HOME,		X(RAYA),
-			KC_NO,		KC_TRNS,	KC_TRNS,		KC_TRNS,		KC_TRNS,	        KC_NO,		KC_NO,		 						MO(_OTHERS),	RALT(KC_5),		KC_NO,				KC_NO,			KC_NO
+     	[_LOWER]=LAYOUT_ortho_4x12(
+			KC_DEL,		KC_NO,		LENS_CLOSE,	LENS_DOWN,	LENS_UP,        DM_PLY1,	KC_GRV,		 			KC_EXLM,	KC_AT,		KC_HASH,	KC_DLR,		KC_PERC,
+			KC_ENT,		WINTAB,		ALTTAB,	    	C(G(KC_LEFT)),	C(G(KC_RIGHT)),	DM_PLY2,	RSA(KC_SCLN),				KC_CIRC,	KC_AMPR,	KC_ASTR,	TD(TD_LPRN),	TD(TD_RPRN),
+			KC_NO,		KC_NO,		KC_NO,		G(S(KC_S)),	C(S(KC_V)),	G(KC_V),	XP(ORDINAL_MALE,ORDINAL_FEMALE),	KC_MINS,	KC_EQL,		KC_BSLS,	UNIX_HOME,	X(RAYA),
+			KC_NO,		KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_NO,		KC_NO,		 			MO(_OTHERS),	RALT(KC_5),	KC_NO,		KC_NO,		KC_NO
 	),
     
    	[_FUNCTION_KEYS]=LAYOUT_ortho_4x12(
@@ -237,7 +271,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	),
 
 	[_MOV2]=LAYOUT_ortho_4x12(
-			KC_NO,			KC_NO,			KC_NO,			KC_NO,			KC_TRNS,	KC_NO,		KC_NO,		KC_NO,			KC_NO,		KC_NO,			KC_NO,	KC_NO,
+			KC_NO,			KC_NO,			KC_NO,			KC_NO,			KC_TRNS,	KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,			KC_NO,	KC_NO,
 			KC_NO,			KC_NO,			KC_NO,			KC_NO,			KC_NO,		KC_NO,		DEL_LWORD,	DEL_END_LINE,	DEL_LINE,	DEL_RWORD,		KC_NO,	KC_NO,
 			KC_NO,			KC_NO,			KC_NO,			KC_NO,			KC_NO,		KC_NO,		KC_NO,		UP_NEW_LINE,	KC_NO,		KC_NO,			KC_NO,	KC_NO,
 			KC_NO,			KC_NO,			KC_NO,			KC_NO,			KC_TAB,		KC_SPACE,	KC_SPACE,	DOWN_NEW_LINE,	KC_NO,		KC_NO,			KC_NO,	KC_NO
@@ -245,32 +279,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	
 	
 	[_RNUM_PAD]=LAYOUT_ortho_4x12(
-			TD(TD_RHAND_LAYER),				KC_PMNS,	KC_PAST,	KC_PSLS,	KC_NUM,		KC_ESC,				KC_ESC,			KC_P7,	KC_P8,	KC_P9,		KC_PPLS,	KC_BSPC,
-			LM(_QWERTY2,MOD_LALT),			KC_NO,		KC_NO,		KC_NO,		KC_AT,		KC_TAB,				KC_TAB,			KC_P4,	KC_P5,	KC_P6,		KC_PPLS,	KC_DEL,
+			TD(TD_RHAND_LAYER),			KC_PMNS,	KC_PAST,	KC_PSLS,	KC_NUM,		KC_ESC,				KC_ESC,			KC_P7,	KC_P8,	KC_P9,		KC_PPLS,	KC_BSPC,
+			LM(_QWERTY2,MOD_LALT),		 	KC_NO,		KC_NO,		KC_NO,		KC_AT,		KC_TAB,				KC_TAB,			KC_P4,	KC_P5,	KC_P6,		KC_PPLS,	KC_DEL,
 			LM(_QWERTY2,MOD_LCTL),			KC_NO,		KC_NO,		KC_NO,		KC_PERC,	KC_COMM,			KC_COMM,		KC_P1,	KC_P2,	KC_P3,		KC_PENT,	KC_PEQL,
-			LM(_QWERTY2,MOD_LCTL|MOD_LALT),	KC_NO,		KC_NO,		KC_NO,		KC_ENT,		SH_T(KC_SPACE),		SH_T(KC_SPACE),	KC_P0,	KC_P0,	KC_PDOT,	KC_PENT,	KC_PEQL
+			LM(_QWERTY2,MOD_LCTL|MOD_LALT),		KC_NO,		KC_NO,		KC_NO,		KC_ENT,		SH_T(KC_SPACE),			SH_T(KC_SPACE),		KC_P0,	KC_P0,	KC_PDOT,	KC_PENT,	KC_PEQL
 	),
 
 	[_NUM_PAD]=LAYOUT_ortho_4x12(
-			TD(TD_RHAND_LAYER),				KC_DEL,	KC_7,		KC_8,	KC_9,		KC_ESC,		KC_ESC,		KC_7,	KC_8,	KC_9,	KC_DEL,	KC_BSPC,
-			LM(_QWERTY2,MOD_LALT),			KC_NO,	KC_4,		KC_5,	KC_6,		KC_TAB,		KC_TAB,		KC_4,	KC_5,	KC_6,	KC_ENT,	KC_NO,
-			LM(_QWERTY2,MOD_LCTL),			KC_ENT,	KC_1,		KC_2,	KC_3,		KC_COMM,	KC_COMM,	KC_1,	KC_2,	KC_3,	KC_ENT,	KC_NO,
-			LM(_QWERTY2,MOD_LCTL|MOD_LALT),	KC_ENT,	KC_DOT,		KC_0,	KC_0,		KC_SPACE,	KC_SPACE,	KC_0,	KC_0,	KC_DOT,	KC_ENT,	KC_NO
+			TD(TD_RHAND_LAYER),			KC_DEL,	KC_7,	KC_8,	KC_9,	KC_ESC,		KC_ESC,		KC_7,	KC_8,	KC_9,	KC_DEL,	KC_BSPC,
+			LM(_QWERTY2,MOD_LALT),			KC_NO,	KC_4,	KC_5,	KC_6,	KC_TAB,		KC_TAB,		KC_4,	KC_5,	KC_6,	KC_ENT,	KC_NO,
+			LM(_QWERTY2,MOD_LCTL),			KC_ENT,	KC_1,	KC_2,	KC_3,	KC_COMM,	KC_COMM,	KC_1,	KC_2,	KC_3,	KC_ENT,	KC_NO,
+			LM(_QWERTY2,MOD_LCTL|MOD_LALT),		KC_ENT,	KC_DOT,	KC_0,	KC_0,	KC_SPACE,	KC_SPACE,	KC_0,	KC_0,	KC_DOT,	KC_ENT,	KC_NO
 	),
 
 	[_MOUSE]=LAYOUT_ortho_4x12(
-			KC_TRNS,	KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_MS_BTN1,		KC_MS_UP,	KC_MS_BTN2,		KC_MS_WH_UP,	KC_MS_ACCEL0,
-			KC_TRNS,	KC_TRNS,	KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_MS_LEFT,		KC_MS_DOWN,	KC_MS_RIGHT,	KC_MS_WH_DOWN,	KC_MS_ACCEL1,
-			KC_TRNS,	KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_MS_WH_LEFT,	KC_MS_BTN3,	KC_MS_WH_RIGHT,	KC_NO,			KC_MS_ACCEL2,
-			KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,		KC_TRNS,	KC_TRNS,		KC_TRNS,		KC_TRNS
+			KC_TRNS,	KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_MS_BTN1,	KC_MS_UP,	KC_MS_BTN2,	KC_MS_WH_UP,	KC_MS_ACCEL0,
+			KC_TRNS,	KC_TRNS,	KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_MS_LEFT,	KC_MS_DOWN,	KC_MS_RIGHT,	KC_MS_WH_DOWN,	KC_MS_ACCEL1,
+			KC_TRNS,	KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_NO,		KC_MS_WH_LEFT,	KC_MS_BTN3,	KC_MS_WH_RIGHT,	KC_NO,		KC_MS_ACCEL2,
+			KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TRNS
 	),
 	
+	[_I3]=LAYOUT_ortho_4x12(
+  		TD(TD_RHAND_LAYER), 	KC_NO,   KC_NO,   KC_NO,   I3_MENU,   	I3_TERM,    I3_FULL, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS,
+  		I3_WS1,  		I3_WS2,  I3_WS3,  I3_WS4,  I3_WS5,   	I3_WS6,     I3_FL,   I3_FD,   I3_FU,   I3_FR,   KC_NO,   KC_TRNS,
+  		I3_MV1,  		I3_MV2,  I3_MV3,  I3_MV4,  I3_MV5, 	I3_MV6,     I3_ML,   I3_MD,   I3_MU,   I3_MR,   KC_NO,   KC_TRNS,
+		KC_TRNS, 		KC_NO,   KC_NO,   I3_KILL, I3_FLOT, 	KC_NO,      KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS
+	),
+		
 
 	[_QWERTY2]=LAYOUT_ortho_4x12(
 		TD(TD_RHAND_LAYER),		KC_Q,		KC_W,		KC_E,		KC_R,		KC_T,		KC_Y,		KC_U,		KC_I,		KC_O,		KC_P,			KC_BSPC,
-		KC_TRNS,				KC_A,		KC_S,		KC_D,		KC_F,		KC_G,		KC_H,		KC_J,		KC_K,		KC_L,		KC_SCLN,		KC_QUOT,
-		KC_TRNS,				KC_Z,		KC_X,		KC_C,		KC_V,		KC_B,		KC_N,		KC_M,		KC_COMM,	KC_DOT,		KC_SLSH,		QK_LEAD,
-		KC_TRNS,				KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TAB,		KC_SPACE,	KC_SPACE,	KC_ENT,		KC_TRNS,	KC_TRNS,	KC_TRNS,		KC_TRNS
+		KC_TRNS,			KC_A,		KC_S,		KC_D,		KC_F,		KC_G,		KC_H,		KC_J,		KC_K,		KC_L,		KC_SCLN,		KC_QUOT,
+		KC_TRNS,			KC_Z,		KC_X,		KC_C,		KC_V,		KC_B,		KC_N,		KC_M,		KC_COMM,	KC_DOT,		KC_SLSH,		QK_LEAD,
+		KC_TRNS,			KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TAB,		KC_SPACE,	KC_SPACE,	KC_ENT,		KC_TRNS,	KC_TRNS,	KC_TRNS,		KC_TRNS
 	)
 };
 
@@ -398,7 +439,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 			if (record->event.pressed){
 
-				SEND_STRING("~/");
+			    // Limpia cualquier modificador residual (oneshot, stuck mods, etc.)
+			    clear_mods();
+			    clear_oneshot_mods();
+			    clear_oneshot_layer_state(ONESHOT_OTHER_KEY_PRESSED);
+			    send_keyboard_report();
+			    wait_ms(30);
+
+			    // Shift down
+			    register_code(KC_LSFT);
+			    send_keyboard_report();
+			    wait_ms(40);
+
+			    // ` down/up (con Shift = ~ en US)
+			    register_code(KC_GRV);
+			    send_keyboard_report();
+			    wait_ms(40);
+			    unregister_code(KC_GRV);
+			    send_keyboard_report();
+			    wait_ms(40);
+
+			    // Shift up
+			    unregister_code(KC_LSFT);
+			    send_keyboard_report();
+			    wait_ms(40);
+
+			    tap_code(KC_SPACE);
+			    wait_ms(20);
+			   
+			    // /
+			    tap_code(KC_SLSH);
+			    wait_ms(20);
+				
 				
 			}	
 			
@@ -515,77 +587,167 @@ void leader_start_user(void) {
 	layer_on(_QWERTY2);
 }
 
+// -----------------------------------------------------------------------------
+// Configuración tmux
+// -----------------------------------------------------------------------------
+
+// Delay (ms) entre el prefijo de tmux y la tecla de comando
+#define TMUX_PREFIX_DELAY_MS 60
+
+// Prefijo tmux por defecto: Ctrl + b
+static inline void tmux_prefix(void) {
+    tap_code16(LCTL(KC_B));
+}
+
+// Envía: prefijo -> espera -> tecla
+static inline void tmux_cmd(uint16_t keycode) {
+    tmux_prefix();
+    wait_ms(TMUX_PREFIX_DELAY_MS);
+    tap_code16(keycode);
+}
+
+// Envía: prefijo -> espera -> Shift+tecla (útil para % y ")
+static inline void tmux_cmd_shifted(uint16_t keycode) {
+    tmux_prefix();
+    wait_ms(TMUX_PREFIX_DELAY_MS);
+    tap_code16(S(keycode));
+}
+
+// -----------------------------------------------------------------------------
+// Leader
+// -----------------------------------------------------------------------------
+
 void leader_end_user(void) {
-		
-		// ScreenShoot
-		if (leader_sequence_one_key(KC_S)) {
-			SEND_STRING(SS_LGUI(SS_LSFT(SS_TAP(X_S))));
-		}
-		
-		// Terminal
-		else if (leader_sequence_one_key(KC_T)) {
-			SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_T))));
-		}
-		
-		// Notepad
-		else if (leader_sequence_one_key(KC_N)) {
-			SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_N))));
-		}
-		
-		// Explorador Archivos
-		else if (leader_sequence_one_key(KC_E)) {
-			SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_E))));
-		}
-		  
-		// Chrome home page
-		else if (leader_sequence_one_key(KC_H)) {
-			SEND_STRING(SS_LALT(SS_TAP(X_HOME)));
-			SEND_STRING(SS_LALT(SS_TAP(X_0)));
-		}
 
-		//windows calculator
-		 else if (leader_sequence_one_key(KC_K)) {
-			SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_C))));
-		}
-		
-		// ctr + alt + spr 
-		else if (leader_sequence_three_keys(KC_C, KC_A, KC_D)) {
-			SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_DELETE))));
-		}
+    // Numkeyboard
+    if (leader_sequence_one_key(KC_J)) {
+        layer_move(_RNUM_PAD);
+    }
 
-		// ctr + alt + backspace 
-		else if (leader_sequence_three_keys(KC_C, KC_A, KC_B) ){
-			SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_BSPC))));
-		}
-		
-		// Capslock
-		else if (leader_sequence_three_keys(KC_C, KC_A, KC_P)) {
-	  		tap_code(KC_CAPS);
-		}
+    // ScreenShoot
+    else if (leader_sequence_one_key(KC_S)) {
+        SEND_STRING(SS_LGUI(SS_LSFT(SS_TAP(X_S))));
+    }
 
-		// caps lock / num lock / scroll lock OFF
-		else if (leader_sequence_three_keys(KC_O, KC_F, KC_F)) {
-	  	
-		  	if (host_keyboard_led_state().num_lock) {
-				tap_code(KC_NUM);
-		  	}
-		  	
-		  	if (host_keyboard_led_state().scroll_lock) {
-				tap_code(KC_SCROLL_LOCK); 
-			}
-		  	
-		  	if (host_keyboard_led_state().caps_lock) {
-				tap_code(KC_CAPS_LOCK); 
-			}   
-		
-		}
-		
-		// Close active windows
-		else if (leader_sequence_three_keys(KC_C, KC_L, KC_S)) {
-			SEND_STRING(SS_LALT(SS_TAP(X_F4)));
-		}
-	
-		layer_clear();
+    // Terminal
+    else if (leader_sequence_one_key(KC_T)) {
+        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_T))));
+    }
+
+    // Notepad
+    else if (leader_sequence_one_key(KC_N)) {
+        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_N))));
+    }
+
+    // Explorador Archivos
+    else if (leader_sequence_one_key(KC_E)) {
+        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_E))));
+    }
+
+    // Chrome home page
+    else if (leader_sequence_one_key(KC_H)) {
+        SEND_STRING(SS_LALT(SS_TAP(X_HOME)));
+        SEND_STRING(SS_LALT(SS_TAP(X_0)));
+    }
+
+    // Windows calculator
+    else if (leader_sequence_one_key(KC_K)) {
+        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_C))));
+    }
+
+    // Ctrl + Alt + Supr
+    else if (leader_sequence_three_keys(KC_C, KC_A, KC_D)) {
+        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_DELETE))));
+    }
+
+    // Ctrl + Alt + Backspace
+    else if (leader_sequence_three_keys(KC_C, KC_A, KC_B)) {
+        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_BSPC))));
+    }
+
+    // Capslock
+    else if (leader_sequence_three_keys(KC_C, KC_A, KC_P)) {
+        tap_code(KC_CAPS);
+    }
+
+    // Caps lock / num lock / scroll lock OFF
+    else if (leader_sequence_three_keys(KC_O, KC_F, KC_F)) {
+
+        if (host_keyboard_led_state().num_lock) {
+            tap_code(KC_NUM);
+        }
+
+        if (host_keyboard_led_state().scroll_lock) {
+            tap_code(KC_SCROLL_LOCK);
+        }
+
+        if (host_keyboard_led_state().caps_lock) {
+            tap_code(KC_CAPS_LOCK);
+        }
+    }
+
+    // Close active windows
+    else if (leader_sequence_three_keys(KC_C, KC_L, KC_S)) {
+        SEND_STRING(SS_LALT(SS_TAP(X_F4)));
+    }
+
+    // -------------------------------------------------------------------------
+    // tmux macros (Leader + ...)
+    // -------------------------------------------------------------------------
+    // Sugerencia de mapeo (típico):
+    //   Leader + M  + C  -> new window      (prefix + c)
+    //   Leader + M  + N  -> next window     (prefix + n)
+    //   Leader + M  + P  -> prev window     (prefix + p)
+    //   Leader + M  + X  -> kill pane       (prefix + x)
+    //   Leader + M  + D  -> detach          (prefix + d)
+    //   Leader + M  + S  -> choose session  (prefix + s)
+    //   Leader + M  + V  -> split vertical  (prefix + %)
+    //   Leader + M  + H  -> split horizontal(prefix + ")
+    //
+    // Nota: para % y " uso versiones con Shift (S(KC_5) y S(KC_QUOT)).
+    // Ajusta si tu distribución/layout no corresponde a eso.
+
+    // New window (prefix + c)
+    else if (leader_sequence_two_keys(KC_M, KC_C)) {
+        tmux_cmd(KC_C);
+    }
+
+    // Next window (prefix + n)
+    else if (leader_sequence_two_keys(KC_M, KC_N)) {
+        tmux_cmd(KC_N);
+    }
+
+    // Previous window (prefix + p)
+    else if (leader_sequence_two_keys(KC_M, KC_P)) {
+        tmux_cmd(KC_P);
+    }
+
+    // Kill pane (prefix + x)
+    else if (leader_sequence_two_keys(KC_M, KC_X)) {
+        tmux_cmd(KC_X);
+    }
+
+    // Detach (prefix + d)
+    else if (leader_sequence_two_keys(KC_M, KC_D)) {
+        tmux_cmd(KC_D);
+    }
+
+    // Choose session (prefix + s)
+    else if (leader_sequence_two_keys(KC_M, KC_S)) {
+        tmux_cmd(KC_S);
+    }
+
+    // Split vertical (prefix + %)  -> normalmente Shift+5 en US; en ES suele ser distinto
+    else if (leader_sequence_two_keys(KC_M, KC_V)) {
+        tmux_cmd_shifted(KC_5);
+    }
+
+    // Split horizontal (prefix + ") -> normalmente Shift+QUOTE en US; en ES suele ser distinto
+    else if (leader_sequence_two_keys(KC_M, KC_H)) {
+        tmux_cmd_shifted(KC_QUOT);
+    }
+
+    // layer_clear();
 }
 
 
@@ -645,6 +807,8 @@ void lprn_finished(tap_dance_state_t *state, void *user_data);
 void lprn_reset(tap_dance_state_t *state, void *user_data);
 void rprn_finished(tap_dance_state_t *state, void *user_data);
 void rprn_reset(tap_dance_state_t *state, void *user_data);
+void space_finished(tap_dance_state_t *state, void *user_data);
+void space_reset(tap_dance_state_t *state, void *user_data);
 
 
 
@@ -663,7 +827,8 @@ tap_dance_action_t tap_dance_actions[] = {
 	[TD_SFT_MOV]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, sftmov_finished, sftmov_reset),
 	[TD_CTL_MOV]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ctlmov_finished, ctlmov_reset),
 	[TD_LPRN]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lprn_finished, lprn_reset),
-	[TD_RPRN]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rprn_finished, rprn_reset)     
+	[TD_RPRN]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rprn_finished, rprn_reset),   
+	[TD_SPACE]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, space_finished, space_reset) 
 };
 
 
@@ -1239,6 +1404,57 @@ void rprn_reset(tap_dance_state_t *state, void *user_data) {
 }
 
 
+void space_finished(tap_dance_state_t *state, void *user_data) {
+    
+    numpad_tap_state.state = cur_dance(state);
+
+    switch (numpad_tap_state.state) {
+        
+		case TD_SINGLE_TAP:
+			
+			tap_code(KC_SPACE); 		
+			break;
+
+		
+		case TD_SINGLE_HOLD:
+			
+			swap_hands_on();
+			break;
+
+			
+		case TD_DOUBLE_TAP:
+			
+			//layer_on(_I3);
+			break;
+
+		case TD_DOUBLE_HOLD:
+			
+			layer_on(_I3);
+	
+			break;
+
+		default:
+			break;
+		
+    }
+}
+
+void space_reset(tap_dance_state_t *state, void *user_data) {
+
+    if (numpad_tap_state.state == TD_SINGLE_HOLD) {
+		
+		swap_hands_off();
+		
+	}
+
+    if (numpad_tap_state.state == TD_DOUBLE_HOLD) {
+		
+		layer_off(_I3);
+		
+	}
+		
+    numpad_tap_state.state = TD_NONE;
+}
 
 
 void running_boot(void){

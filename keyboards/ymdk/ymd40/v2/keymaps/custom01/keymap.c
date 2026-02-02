@@ -107,10 +107,17 @@ enum custom_keycodes {
   KVM03
 };
 
-bool alttab_token;
-bool altwin_token;
-bool special_capslock_token;
-bool special_capslock_token2;
+// -----------------------------------------------------------------------------
+// Alt-Tab / Win-Tab en "modo": mantiene el modificador un rato para poder
+// tabear varias veces. Se libera automáticamente por timeout.
+// -----------------------------------------------------------------------------
+#define MODTAB_TIMEOUT_MS 800
+
+static bool     alttab_active = false;
+static uint16_t alttab_timer  = 0;
+
+static bool     wintab_active = false;
+static uint16_t wintab_timer  = 0;
 
 
 
@@ -323,25 +330,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	switch (keycode) {
 
 		case ALTTAB: 
-
-			if (record->event.pressed){
-
-				SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_TAB));
-				alttab_token = true;
+			if (record->event.pressed) {
+				// Activa Alt en modo "sticky" temporal
+				if (!alttab_active) {
+					alttab_active = true;
+					register_code(KC_LALT);
+				}
+				alttab_timer = timer_read();
+				tap_code(KC_TAB);
 			}
-
-			break;
+			return false;
 
 
 		case WINTAB:
-
-			if (record->event.pressed){
-
-				SEND_STRING(SS_DOWN(X_LGUI) SS_TAP(X_TAB));
-				altwin_token = true;
+			if (record->event.pressed) {
+				// Activa GUI (Win) en modo "sticky" temporal
+				if (!wintab_active) {
+					wintab_active = true;
+					register_code(KC_LGUI);
+				}
+				wintab_timer = timer_read();
+				tap_code(KC_TAB);
 			}
-
-			break;
+			return false;
 
 		case DEL_LWORD: 
 
@@ -547,35 +558,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 			break;
 
 		default:
-			
-			if (special_capslock_token && record->event.pressed && keycode >= KC_A && keycode <= KC_Z) {
-				
-				special_capslock_token2 = true;
-			}
+			break;
 
 	}	
 
 	return true;
   
 };
-
-
-void macrokeys_reset_tokens(void){
-
-	if (layer_state_is(_QWERTY) && alttab_token) {
-		
-		SEND_STRING(SS_UP(X_LALT));
-		alttab_token = false;
-		
-		} 
-
-	if (layer_state_is(_QWERTY) && altwin_token) {
-		
-		SEND_STRING(SS_UP(X_LGUI));
-		altwin_token = false;
-		
-		} 
-}
 
 
 
@@ -624,45 +613,45 @@ void leader_end_user(void) {
         layer_move(_RNUM_PAD);
     }
 
-    // ScreenShoot
+    // ScreenShoot (Win: GUI+Shift+S)
     else if (leader_sequence_one_key(KC_S)) {
-        SEND_STRING(SS_LGUI(SS_LSFT(SS_TAP(X_S))));
+        tap_code16(LGUI(LSFT(KC_S)));
     }
 
-    // Terminal
+    // Terminal (Ctrl+Alt+T)
     else if (leader_sequence_one_key(KC_T)) {
-        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_T))));
+        tap_code16(LCTL(LALT(KC_T)));
     }
 
-    // Notepad
+    // Notepad (Ctrl+Alt+N)
     else if (leader_sequence_one_key(KC_N)) {
-        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_N))));
+        tap_code16(LCTL(LALT(KC_N)));
     }
 
-    // Explorador Archivos
+    // Explorador Archivos (Ctrl+Alt+E)
     else if (leader_sequence_one_key(KC_E)) {
-        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_E))));
+        tap_code16(LCTL(LALT(KC_E)));
     }
 
     // Chrome home page
     else if (leader_sequence_one_key(KC_H)) {
-        SEND_STRING(SS_LALT(SS_TAP(X_HOME)));
-        SEND_STRING(SS_LALT(SS_TAP(X_0)));
+        tap_code16(LALT(KC_HOME));
+        tap_code16(LALT(KC_0));
     }
 
     // Windows calculator
     else if (leader_sequence_one_key(KC_K)) {
-        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_C))));
+        tap_code16(LCTL(LALT(KC_C)));
     }
 
     // Ctrl + Alt + Supr
     else if (leader_sequence_three_keys(KC_C, KC_A, KC_D)) {
-        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_DELETE))));
+        tap_code16(LCTL(LALT(KC_DEL)));
     }
 
     // Ctrl + Alt + Backspace
     else if (leader_sequence_three_keys(KC_C, KC_A, KC_B)) {
-        SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_BSPC))));
+        tap_code16(LCTL(LALT(KC_BSPC)));
     }
 
     // Capslock
@@ -688,7 +677,7 @@ void leader_end_user(void) {
 
     // Close active windows
     else if (leader_sequence_three_keys(KC_C, KC_L, KC_S)) {
-        SEND_STRING(SS_LALT(SS_TAP(X_F4)));
+        tap_code16(LALT(KC_F4));
     }
 
     // -------------------------------------------------------------------------
@@ -747,7 +736,10 @@ void leader_end_user(void) {
         tmux_cmd_shifted(KC_QUOT);
     }
 
-    // layer_clear();
+
+    // IMPORTANTE: _QWERTY2 se activa en leader_start_user() como capa "técnica"
+    // (sin teclas dual-role) y debe desactivarse siempre al salir de Leader.
+    layer_off(_QWERTY2);
 }
 
 
@@ -882,8 +874,6 @@ void numpad_finished(tap_dance_state_t *state, void *user_data) {
 				tap_code(KC_CAPS);
 			}				
 			
-			special_capslock_token = false;
-			
 			break;
 			
 			        
@@ -948,29 +938,21 @@ void capslock_finished(tap_dance_state_t *state, void *user_data) {
     switch (numpad_tap_state.state) {
  
 		case TD_SINGLE_TAP:		
-			if (layer_state_is(_QWERTY)	&& !(host_keyboard_led_state().caps_lock)) {
-				
-				layer_move(_QWERTY2);
-				tap_code(KC_CAPS);
-				special_capslock_token = true;
-			}
+			// One-Shot Shift: UNA sola mayúscula (ideal para swap_hands / mirror typing)
+			// Se consume en la siguiente tecla y se desactiva automáticamente.
+			add_oneshot_mods(MOD_LSFT);
 
 			break;
 			
         case TD_DOUBLE_TAP:
-        	
-        	if (layer_state_is(_QWERTY)	&& !(host_keyboard_led_state().caps_lock)) {
-				
-				tap_code(KC_CAPS);
-				special_capslock_token = false;
-				layer_move(_QWERTY);
-			}
+			// Caps Lock "real" si lo necesitas puntualmente
+			tap_code(KC_CAPS);
 			
             break;
 		
         case TD_SINGLE_HOLD:
-			
-			SEND_STRING(SS_DOWN(X_LSFT));
+			// Shift mantenido mientras sostienes la tecla
+			register_code(KC_LSFT);
 			
             break;
         
@@ -981,8 +963,8 @@ void capslock_finished(tap_dance_state_t *state, void *user_data) {
 
 
 void capslock_reset(tap_dance_state_t *state, void *user_data) {
-
-	SEND_STRING(SS_UP(X_LSFT));
+	// Solo tiene efecto si venimos de TD_SINGLE_HOLD
+	unregister_code(KC_LSFT);
     numpad_tap_state.state = TD_NONE;
     
 }
@@ -1496,25 +1478,18 @@ void handleBoot(){
 	}  
 }
 
-
-void reset_special_capslock(void){
-
-	if(special_capslock_token2){
-	
-		layer_move(_QWERTY);
-		tap_code(KC_CAPS);
-		special_capslock_token = false;
-		special_capslock_token2 = false;		
-	
+void matrix_scan_user(void) {
+	// Alt-Tab / Win-Tab: auto-release por timeout
+	if (alttab_active && timer_elapsed(alttab_timer) > MODTAB_TIMEOUT_MS) {
+		unregister_code(KC_LALT);
+		alttab_active = false;
+	}
+	if (wintab_active && timer_elapsed(wintab_timer) > MODTAB_TIMEOUT_MS) {
+		unregister_code(KC_LGUI);
+		wintab_active = false;
 	}
 
-}
-
-void matrix_scan_user(void) {
-  
-	macrokeys_reset_tokens();
 	running_boot();
-	reset_special_capslock();
 		
 }
 

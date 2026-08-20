@@ -1,0 +1,22 @@
+LTO_ENABLE = yes
+
+TAP_DANCE_ENABLE = yes
+LEADER_ENABLE = yes
+DYNAMIC_MACRO_ENABLE = yes
+DYNAMIC_TAPPING_TERM_ENABLE = yes
+MOUSEKEY_ENABLE = yes
+SWAP_HANDS_ENABLE = yes
+UNICODEMAP_ENABLE = yes
+
+# Recorte de “ruido” típico
+CONSOLE_ENABLE = no
+COMMAND_ENABLE = no
+DEBUG_ENABLE = no
+BOOTMAGIC_ENABLE = no
+
+# Si NO usas luces, esto es el gran ahorro:
+RGBLIGHT_ENABLE = no
+BACKLIGHT_ENABLE = no
+
+
+

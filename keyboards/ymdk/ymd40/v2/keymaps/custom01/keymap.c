@@ -55,6 +55,9 @@ enum unicode_names {
 #define I3_WS4  LGUI(KC_4)
 #define I3_WS5  LGUI(KC_5)
 #define I3_WS6  LGUI(KC_6)
+#define I3_WS7  LGUI(KC_7)
+#define I3_WS8  LGUI(KC_8)
+#define I3_WS9  LGUI(KC_9)
 
 #define I3_MV1  LSFT(LGUI(KC_1))
 #define I3_MV2  LSFT(LGUI(KC_2))
@@ -62,6 +65,9 @@ enum unicode_names {
 #define I3_MV4  LSFT(LGUI(KC_4))
 #define I3_MV5  LSFT(LGUI(KC_5))
 #define I3_MV6  LSFT(LGUI(KC_6))
+#define I3_MV7  LSFT(LGUI(KC_7))
+#define I3_MV8  LSFT(LGUI(KC_8))
+#define I3_MV9  LSFT(LGUI(KC_9))
 
 #define I3_FL   LGUI(KC_H)                 // focus left  (según tu i3: Mod+h)
 #define I3_FD   LGUI(KC_J)                 // focus down
@@ -307,15 +313,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	),
 	
 	[_I3]=LAYOUT_ortho_4x12(
-  		TD(TD_RHAND_LAYER), 	KC_NO,   KC_NO,   KC_NO,   I3_MENU,   	I3_TERM,    I3_FULL, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS,
-  		I3_WS1,  		I3_WS2,  I3_WS3,  I3_WS4,  I3_WS5,   	I3_WS6,     I3_FL,   I3_FD,   I3_FU,   I3_FR,   KC_NO,   KC_TRNS,
-  		I3_MV1,  		I3_MV2,  I3_MV3,  I3_MV4,  I3_MV5, 	I3_MV6,     I3_ML,   I3_MD,   I3_MU,   I3_MR,   KC_NO,   KC_TRNS,
-		KC_TRNS, 		KC_NO,   KC_NO,   I3_KILL, I3_FLOT, 	KC_NO,      KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS
+  		KC_TRNS, 		I3_MV1,  I3_MV2,  I3_MV3,  I3_MV4, 	I3_MV5,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS,
+  		KC_NO,	 		I3_MV6,  I3_MV7,  I3_MV8,  I3_MV9,   	KC_NO,    I3_FL,   I3_FD,   I3_FU,   I3_FR,   KC_NO,   KC_TRNS,
+  		KC_NO,  		KC_NO,   KC_NO,   KC_NO,   KC_NO, 	I3_MV5,   I3_ML,   I3_MD,   I3_MU,   I3_MR,   KC_NO,   KC_TRNS,
+		KC_TRNS, 		KC_NO,   KC_NO,   KC_NO,   KC_NO, 	KC_NO,    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS
 	),
 		
 
 	[_QWERTY2]=LAYOUT_ortho_4x12(
-		TD(TD_RHAND_LAYER),		KC_Q,		KC_W,		KC_E,		KC_R,		KC_T,		KC_Y,		KC_U,		KC_I,		KC_O,		KC_P,			KC_BSPC,
+		KC_TRNS,			KC_Q,		KC_W,		KC_E,		KC_R,		KC_T,		KC_Y,		KC_U,		KC_I,		KC_O,		KC_P,			KC_BSPC,
 		KC_TRNS,			KC_A,		KC_S,		KC_D,		KC_F,		KC_G,		KC_H,		KC_J,		KC_K,		KC_L,		KC_SCLN,		KC_QUOT,
 		KC_TRNS,			KC_Z,		KC_X,		KC_C,		KC_V,		KC_B,		KC_N,		KC_M,		KC_COMM,	KC_DOT,		KC_SLSH,		QK_LEAD,
 		KC_TRNS,			KC_TRNS,	KC_TRNS,	KC_TRNS,	KC_TAB,		KC_SPACE,	KC_SPACE,	KC_ENT,		KC_TRNS,	KC_TRNS,	KC_TRNS,		KC_TRNS

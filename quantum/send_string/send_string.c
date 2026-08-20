@@ -24,6 +24,10 @@
 #include "action.h"
 #include "wait.h"
 
+#if defined(__AVR__)
+#    include <avr/io.h>
+#endif
+
 #if defined(AUDIO_ENABLE) && defined(SENDSTRING_BELL)
 #    include "audio.h"
 #    ifndef BELL_SOUND
